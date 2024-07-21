@@ -16,6 +16,38 @@ model User {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
+model Car {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  REGINUMBER     String
+  OWNERNAME      String    @unique
+  CARVENDER      String?
+  CARNAME        String?
+  SUBMODEL       String?
+  UID            String?
+  CARYEAR        Int?
+  DRIVE          String?
+  FUEL           String?
+  PRICE          Int?
+  CC             Int?
+  MISSION        String?
+  CARURL         String?
+  VIN            String?
+  RESULT         String?
+  ERRMSG         String?
+  FRONTTIRE      String?
+  REARTIRE       String?
+  EOILLITER      Float?
+  WIPER          String?
+  SEATS          Int?
+  FUELECO        Float?
+  FUELTANK       Float?
+  BATTERYLIST    String[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+
+  @@map("cars")
+}
 
 model Contact {
   id             String    @id @default(auto()) @map("_id") @db.ObjectId
