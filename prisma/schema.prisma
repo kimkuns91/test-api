@@ -24,11 +24,11 @@ model Car {
   CARNAME        String?
   SUBMODEL       String?
   UID            String?
-  CARYEAR        Int?
+  CARYEAR        String?
   DRIVE          String?
   FUEL           String?
-  PRICE          Int?
-  CC             Int?
+  PRICE          String?
+  CC             String?
   MISSION        String?
   CARURL         String?
   VIN            String?
@@ -36,12 +36,12 @@ model Car {
   ERRMSG         String?
   FRONTTIRE      String?
   REARTIRE       String?
-  EOILLITER      Float?
+  EOILLITER      String?
   WIPER          String?
-  SEATS          Int?
-  FUELECO        Float?
-  FUELTANK       Float?
-  BATTERYLIST    String[]
+  SEATS          String?
+  FUELECO        String?
+  FUELTANK       String?
+  BATTERYLIST    Json?  
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   deletedAt      DateTime?
