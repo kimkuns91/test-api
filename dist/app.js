@@ -10,7 +10,10 @@ const app = (0, express_1.default)();
 // 미들웨어 설정
 app.use((0, body_parser_1.json)());
 app.use((0, body_parser_1.urlencoded)({ extended: true }));
+app.get("/", (_req, res) => {
+    return res.send("Express Typescript on Vercel");
+});
 // 라우터 설정
-app.use('/api', routes_1.default);
+app.use("/api", routes_1.default);
 exports.default = app;
 //# sourceMappingURL=app.js.map
