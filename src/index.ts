@@ -12,5 +12,5 @@ app.get("/ping", (_req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-  return console.log(`Server is listening on ${port}`);
+  return console.log(`This Server is listening on ${port}`);
 });
