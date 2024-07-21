@@ -1,6 +1,6 @@
-import express, { Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 
-const app = express();
+const app: Application = express();
 const port = process.env.PORT || 8080;
 
 app.get("/", (_req: Request, res: Response) => {
