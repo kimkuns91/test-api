@@ -77,6 +77,7 @@ const getCarInfo = async (req: Request, res: Response) => {
       FUELTANK: data.data.FUELTANK,
       BATTERYLIST: data.data.BATTERYLIST,
     };
+
     // 외부 API 응답 데이터를 데이터베이스에 저장합니다.
     const newCarInfo = await prisma.car.create({
       data: carInfoData,
@@ -87,7 +88,7 @@ const getCarInfo = async (req: Request, res: Response) => {
     return res.status(200).json(newCarInfo);
   } catch (error) {
     console.error("Error fetching car info:", error);
-    return res.status(500).json({ message: "Error fetching car info", error });
+    return res.status(500).json({ message: "조회 중 오류가 발생했습니다. 다시 시도해주세요.", error: error.message });
   }
 };
 
