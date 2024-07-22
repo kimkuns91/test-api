@@ -31,48 +31,53 @@ const getCarInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(200).json(existingCarInfo);
         }
         // 기존 차량 정보가 없을 경우 외부 API를 호출합니다.
-        if (!process.env.DATA_HUB_API_TOKEN) {
-            return res.status(500).json({ message: "API token is missing in environment variables" });
+        const apiToken = process.env.DATA_HUB_API_TOKEN;
+        if (!apiToken) {
+            return res
+                .status(500)
+                .json({ message: "API token is missing in environment variables" });
         }
-        const response = yield axios_1.default.post("https://datahub-dev.scraping.co.kr/assist/common/carzen/CarAllInfoInquiry", {
-            REGINUMBER,
-            OWNERNAME,
-        }, {
+        const response = yield axios_1.default.post("https://datahub-dev.scraping.co.kr/assist/common/carzen/CarAllInfoInquiry", { REGINUMBER, OWNERNAME }, {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: process.env.DATA_HUB_API_TOKEN,
+                Authorization: apiToken,
             },
         });
         const data = response.data;
+        if (data.result === "FAIL") {
+            return res.status(500).json({ message: data.errMsg, data });
+        }
         console.log("data:", data);
+        // 응답 데이터 구조화
+        const carInfoData = {
+            REGINUMBER,
+            OWNERNAME,
+            CARVENDER: data.data.CARVENDER,
+            CARNAME: data.data.CARNAME,
+            SUBMODEL: data.data.SUBMODEL,
+            UID: data.data.UID,
+            CARYEAR: data.data.CARYEAR,
+            DRIVE: data.data.DRIVE,
+            FUEL: data.data.FUEL,
+            PRICE: data.data.PRICE,
+            CC: data.data.CC,
+            MISSION: data.data.MISSION,
+            CARURL: data.data.CARURL,
+            VIN: data.data.VIN,
+            RESULT: data.data.RESULT,
+            ERRMSG: data.data.ERRMSG,
+            FRONTTIRE: data.data.FRONTTIRE,
+            REARTIRE: data.data.REARTIRE,
+            EOILLITER: data.data.EOILLITER,
+            WIPER: data.data.WIPER,
+            SEATS: data.data.SEATS,
+            FUELECO: data.data.FUELECO,
+            FUELTANK: data.data.FUELTANK,
+            BATTERYLIST: data.data.BATTERYLIST,
+        };
         // 외부 API 응답 데이터를 데이터베이스에 저장합니다.
         const newCarInfo = yield prisma_1.default.car.create({
-            data: {
-                REGINUMBER: REGINUMBER,
-                OWNERNAME: OWNERNAME,
-                CARVENDER: data.data.CARVENDER,
-                CARNAME: data.data.CARNAME,
-                SUBMODEL: data.data.SUBMODEL,
-                UID: data.data.UID,
-                CARYEAR: data.data.CARYEAR,
-                DRIVE: data.data.DRIVE,
-                FUEL: data.data.FUEL,
-                PRICE: data.data.PRICE,
-                CC: data.data.CC,
-                MISSION: data.data.MISSION,
-                CARURL: data.data.CARURL,
-                VIN: data.data.VIN,
-                RESULT: data.data.RESULT,
-                ERRMSG: data.data.ERRMSG,
-                FRONTTIRE: data.data.FRONTTIRE,
-                REARTIRE: data.data.REARTIRE,
-                EOILLITER: data.data.EOILLITER,
-                WIPER: data.data.WIPER,
-                SEATS: data.data.SEATS,
-                FUELECO: data.data.FUELECO,
-                FUELTANK: data.data.FUELTANK,
-                BATTERYLIST: data.data.BATTERYLIST,
-            },
+            data: carInfoData,
         });
         console.log("newCarInfo:", newCarInfo);
         return res.status(200).json(newCarInfo);
