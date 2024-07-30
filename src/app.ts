@@ -12,7 +12,7 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 
 app.get("/", (_req: Request, res: Response) => {
-  return res.send("Express Typescript on Vercel");
+  return res.send("Express Typescript Server on Vercel");
 });
 // 라우터 설정
 app.use("/api", apiRoutes);
